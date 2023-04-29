@@ -1,0 +1,17 @@
+// Get the active image
+ImagePlus imp = IJ.getImage();
+
+// Create a new overlay
+Overlay overlay = new Overlay();
+
+// Add an oval shape to the overlay
+int x = 100;
+int y = 100;
+int width = 50;
+int height = 50;
+Roi roi = new OvalRoi(x, y, width, height);
+overlay.add(roi);
+
+// Add the overlay to the image
+imp.setOverlay(overlay);
+imp.updateAndDraw();
