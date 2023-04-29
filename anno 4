@@ -1,0 +1,33 @@
+import ij.*;
+import ij.gui.*;
+import ij.plugin.*;
+import java.awt.Color;
+
+public class Annotation_Plugin implements PlugIn {
+
+    public void run(String arg) {
+        ImagePlus imp = IJ.getImage();
+
+        // Get a ROI to annotate
+        Roi roi = imp.getRoi();
+        if (roi == null) {
+            IJ.error("Selection required.");
+            return;
+        }
+
+        // Get the graphics object for the ROI
+        ImageCanvas canvas = imp.getCanvas();
+        Graphics g = canvas.getGraphics();
+
+        // Set annotation properties
+        g.setColor(Color.RED);
+        g.setFont(new Font("Arial", Font.BOLD, 16));
+
+        // Draw the annotation
+        g.drawString("My Annotation", roi.getBounds().x, roi.getBounds().y - 20);
+
+        // Update the display
+        canvas.paint(g);
+        imp.updateAndDraw();
+    }
+}
