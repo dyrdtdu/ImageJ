@@ -1,0 +1,25 @@
+import ij.*;
+import ij.gui.*;
+import ij.plugin.frame.*;
+
+// Create a new overlay to hold the annotations
+Overlay overlay = new Overlay();
+
+// Add a text annotation
+TextRoi text = new TextRoi(10, 10, "This is some text");
+text.setStrokeColor(Color.white);
+text.setNonScalable(false);
+overlay.add(text);
+
+// Add a rectangle annotation
+Roi rect = new Roi(50, 50, 100, 100);
+rect.setStrokeColor(Color.red);
+rect.setFillColor(new Color(255, 0, 0, 50));
+overlay.add(rect);
+
+// Add the overlay to the active image
+ImagePlus imp = WindowManager.getCurrentImage();
+imp.setOverlay(overlay);
+
+// Display the overlay
+imp.updateAndDraw();
