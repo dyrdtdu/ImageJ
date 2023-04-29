@@ -1,0 +1,41 @@
+// Import the required packages
+import ij.IJ;
+import ij.ImagePlus;
+import ij.gui.Annotation;
+import ij.gui.GenericDialog;
+import ij.gui.Roi;
+import ij.plugin.PlugIn;
+
+public class MyAnnotations implements PlugIn {
+
+    public void run(String arg) {
+        
+        // Get the active image
+        ImagePlus imp = IJ.getImage();
+        
+        // Create a dialog box for entering the annotation text
+        GenericDialog gd = new GenericDialog("Add Annotation");
+        gd.addStringField("Annotation Text:", "");
+        gd.showDialog();
+        
+        // If the user clicked "Cancel" or closed the dialog box, exit the plugin
+        if (gd.wasCanceled()) {
+            return;
+        }
+        
+        // Get the annotation text from the dialog box
+        String annotationText = gd.getNextString();
+        
+        // Create a new annotation
+        Annotation annotation = new Annotation(imp, 0, 0, annotationText);
+        
+        // Add the annotation to the image
+        imp.getOverlay().add(annotation);
+        
+        // Redraw the image to show the annotation
+        imp.updateAndDraw();
+        
+        // Select the annotation tool
+        IJ.setTool("Annotate");
+    }
+}
