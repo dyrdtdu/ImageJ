@@ -1,0 +1,56 @@
+import ij.IJ;
+import ij.ImagePlus;
+import ij.gui.Line;
+import ij.gui.OvalRoi;
+import ij.gui.Overlay;
+import ij.gui.PolygonRoi;
+import ij.gui.Roi;
+import ij.plugin.frame.RoiManager;
+
+public class AnnotationExample {
+
+    public static void main(String[] args) {
+        
+        // Open an image
+        ImagePlus imp = IJ.openImage("path/to/image.png");
+        imp.show();
+        
+        // Create an overlay to hold the ROIs
+        Overlay overlay = new Overlay();
+        imp.setOverlay(overlay);
+        
+        // Create some ROIs
+        Line line = new Line(50, 50, 100, 100);
+        OvalRoi oval = new OvalRoi(150, 150, 50, 100);
+        int[] xpoints = {200, 250, 300};
+        int[] ypoints = {200, 250, 200};
+        PolygonRoi polygon = new PolygonRoi(xpoints, ypoints, 3, Roi.POLYGON);
+        
+        // Add the ROIs to the overlay
+        overlay.add(line);
+        overlay.add(oval);
+        overlay.add(polygon);
+        
+        // Show the overlay
+        imp.updateAndDraw();
+        
+        // Add the ROIs to the ROI Manager
+        RoiManager roiManager = RoiManager.getInstance();
+        if (roiManager == null) {
+            roiManager = new RoiManager();
+        }
+        roiManager.setVisible(true);
+        roiManager.addRoi(line);
+        roiManager.addRoi(oval);
+        roiManager.addRoi(polygon);
+        
+        // Set names for the ROIs in the ROI Manager
+        roiManager.rename(0, "Line");
+        roiManager.rename(1, "Oval");
+        roiManager.rename(2, "Polygon");
+        
+        // Select an ROI in the ROI Manager
+        roiManager.select(0);
+    }
+
+}
